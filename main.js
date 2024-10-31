@@ -7,7 +7,7 @@ const INPUT=document.querySelector("input")
 const PTASK=document.querySelector("p")
 const SPANTNTASK=document.querySelectorAll("span")[1]
 const BUTTON=document.querySelector("button")
-
+let localStorage=window.localStorage;
 BUTTON.className="btn-add"
 
 
@@ -26,13 +26,34 @@ const creatDivs=(divs)=>{
 
 
 }
-const createLI=()=>{
+let cont=0
+const borrarPTASK=()=>{
+  if(DIVS[3].contains(PTASK)){
+    DIVS[3].removeChild(PTASK)
+    }
+}
+
+const leerStorage=()=>{
+  for(let v=0;v<localStorage.length;v++){
+    const key = localStorage.key(v);
+    console.log(localStorage.getItem(key))
+    if(localStorage.getItem(key)!="" ||localStorage.getItem(key)!=null ||localStorage.getItem(key)!=undefined ){
+    createLI(localStorage.getItem(v),v)
+    borrarPTASK()
+    SPANTNTASK.textContent=parseInt(SPANTNTASK.textContent,10)+1
+    }
+  }
+}
+
+const createLI=(value,index)=>{
   const LI=document.createElement("li")
   const span=document.createElement("span")
   const P=document.createElement("p")
   const BUTTONDEL=BUTTON.cloneNode()
 
-  span.textContent=INPUT.value
+  span.textContent=value
+  localStorage.setItem(cont,span.textContent)
+  cont++
   BUTTONDEL.className="btn-delete"
   BUTTONDEL.textContent="X"
   P.append(span)
@@ -44,6 +65,7 @@ const createLI=()=>{
   LIST.forEach((eli)=>{
     if(eli===LI){
       UL.removeChild(LI)
+      localStorage.removeItem(index)
       SPANTNTASK.textContent=parseInt(SPANTNTASK.textContent,10)-1
     }
   })
@@ -63,10 +85,8 @@ const createLI=()=>{
 BUTTON.addEventListener("click",(e)=>{
   e.preventDefault()
   if(INPUT.value!=""){
-  if(DIVS[3].contains(PTASK)){
-  DIVS[3].removeChild(PTASK)
-  }
-  createLI()
+  borrarPTASK()
+  createLI(INPUT.value)
   SPANTNTASK.textContent=parseInt(SPANTNTASK.textContent,10)+1
   INPUT.value=""
 }
@@ -75,3 +95,4 @@ BUTTON.addEventListener("click",(e)=>{
 
 
 creatDivs(DIVS)
+leerStorage()

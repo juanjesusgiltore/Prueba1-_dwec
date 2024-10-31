@@ -51,16 +51,25 @@ const createLI=()=>{
     DIVS[3].append(PTASK)
   }
   })
+
+  P.addEventListener("click",()=>{
+  
+    P.firstChild.style.textDecoration=="line-through"?
+    P.firstChild.style.textDecoration="":
+    P.firstChild.style.textDecoration="line-through"
+  })
 }
 
 BUTTON.addEventListener("click",(e)=>{
   e.preventDefault()
+  if(INPUT.value!=""){
   if(DIVS[3].contains(PTASK)){
   DIVS[3].removeChild(PTASK)
   }
   createLI()
   SPANTNTASK.textContent=parseInt(SPANTNTASK.textContent,10)+1
   INPUT.value=""
+}
 })
 
 
